@@ -27,7 +27,13 @@
 					<thead>
 		                <tr>
 		                    <th>No</th>
-		                    <th>Kategori</th>
+		                    <th>Barang ID</th>
+							<th>Kategori</th>
+							<th>Supplier</th>
+							<th>Nama Barang</th>
+							<th>Jumlah</th>
+							<th>Harga Beli</th>
+							<th>Harga Jual</th>
 							<th>Tanggal</th>
                             <th>Action</th>
 		                </tr>
@@ -36,11 +42,18 @@
                     <?php 
                     $no = 1;
                     foreach($data as $value) {
+						$key = $value->id_pembelian;
                     ?>
                     <tr>
                         <td><?= $no ?></td>
-                        <td><?= $value->kategori ?></td>
-						<td><?= $value->created_at ?></td>
+                        <td><?= $value->id_barang ?></td>
+						<td><?= $value->kategori ?></td>
+						<td><?= $value->nama_supplier ?></td>
+						<td><?= $value->nama_barang ?></td>
+						<td><?= $value->jumlah ?></td>
+						<td><?= $value->harga_beli ?></td>
+						<td><?= $value->harga_jual ?></td>
+						<td><?= $value->createdAt ?></td>
                         <td>
 			            	<div class="btn-group" role="group">
 			                    <button type="button" class="btn btn-warning dropdown-toggle" id="exampleIconDropdown1"
@@ -50,13 +63,13 @@
 			                    </button>
 			                    <ul class="dropdown-menu" style="min-width:10px;" aria-labelledby="exampleIconDropdown1" role="menu">
 			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$value->id_kategori);?>">
+			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$key);?>">
 			                      	<i class="icon wb-edit" aria-hidden="true"></i>
 			                      	Edit
 			                      	</a>
 			                      </li>
 			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/delete/'.$value->id_kategori);?>" onclick="return confirm('Are you sure to delete data ?')">
+			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/delete/'.$key);?>" onclick="return confirm('Are you sure to delete data ?')">
 			                      	<i class="icon wb-close" aria-hidden="true"></i>
 			                      	Hapus
 			                      	</a>

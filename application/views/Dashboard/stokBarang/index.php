@@ -4,12 +4,12 @@
     <li><a href="<?php echo base_url();?>">Dashboard</a></li>
     <li class="active"><?= $title ?></li>
   </ol>
-  <div class="page-header-actions">
+  <!-- <div class="page-header-actions">
 	  <a href="<?php echo base_url($linkTo.'/add/');?>" class="btn btn-sm btn-default btn-block btn-primary btn-round">
 	      <i aria-hidden="true" class="icon wb-plus"></i>
 	      <span class="hidden-xs">Add new <?= $title ?></span>
 	    </a>
-  </div>
+  </div> -->
 </div>
 
 
@@ -27,7 +27,13 @@
 					<thead>
 		                <tr>
 		                    <th>No</th>
-		                    <th>Kategori</th>
+		                    <th>Barang ID</th>
+							<th>Kategori</th>
+							<th>Nama Barang</th>
+							<th>Stok</th>
+							<th>Stok Minimal</th>
+							<th>Harga Beli</th>
+							<th>Harga Jual</th>
 							<th>Tanggal</th>
                             <th>Action</th>
 		                </tr>
@@ -36,11 +42,23 @@
                     <?php 
                     $no = 1;
                     foreach($data as $value) {
-                    ?>
-                    <tr>
+						$key = $value->id_barang;
+                    if($value->stok <= $value->stok_minimal){
+						$color = "background:#ff7f50; color:white";
+					}else{
+						$color = "";
+					}
+					?>
+                    <tr style="<?= $color ?>">
                         <td><?= $no ?></td>
-                        <td><?= $value->kategori ?></td>
-						<td><?= $value->created_at ?></td>
+                        <td><?= $value->id_barang ?></td>
+						<td><?= $value->kategori ?></td>
+						<td><?= $value->nama_barang ?></td>
+						<td><?= $value->stok ?></td>
+						<td><?= $value->stok_minimal ?></td>
+						<td><?= $value->harga_beli ?></td>
+						<td><?= $value->harga_jual ?></td>
+						<td><?= $value->createdAt ?></td>
                         <td>
 			            	<div class="btn-group" role="group">
 			                    <button type="button" class="btn btn-warning dropdown-toggle" id="exampleIconDropdown1"
@@ -50,15 +68,9 @@
 			                    </button>
 			                    <ul class="dropdown-menu" style="min-width:10px;" aria-labelledby="exampleIconDropdown1" role="menu">
 			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$value->id_kategori);?>">
+			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$key);?>">
 			                      	<i class="icon wb-edit" aria-hidden="true"></i>
-			                      	Edit
-			                      	</a>
-			                      </li>
-			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/delete/'.$value->id_kategori);?>" onclick="return confirm('Are you sure to delete data ?')">
-			                      	<i class="icon wb-close" aria-hidden="true"></i>
-			                      	Hapus
+			                      	Update Min Stok
 			                      	</a>
 			                      </li>
 			                    </ul>

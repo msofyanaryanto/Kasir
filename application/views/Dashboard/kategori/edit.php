@@ -3,7 +3,7 @@
   <ol class="breadcrumb">
     <li><a href="<?php echo base_url();?>">Dashboard</a></li>
     <li><a href="<?php echo base_url($linkTo);?>"><?= $title ?></a></li>
-    <li class="active">Add <?= $title ?></li>
+    <li class="active">Edit <?= $title ?></li>
   </ol>
   
 </div>
@@ -16,16 +16,16 @@
         <div class="col-sm-6 col-md-6">
           <!-- Example Horizontal Form -->
           <div class="example-wrap">
-            <h4 class="example-title">Add Data <?= $title ?></h4>
+            <h4 class="example-title">Edit Data <?= $title ?></h4>
             <p>
               **Fill in the fields below correctly.
             </p>
             <div class="example">
-              <form class="form-horizontal" action="<?php echo base_url($linkTo);?>/add_action" method="post">
+              <form class="form-horizontal" action="<?php echo base_url($linkTo);?>/update_action/<?= $data->id_kategori ?>" method="post">
                 <div class="form-group">
                   <label class="col-sm-4 control-label">Kategori : </label>
                   <div class="col-sm-8">
-                    <input type="text" autocomplete="off" placeholder="Kategori" required name="kategori" class="form-control" >
+                    <input type="text" autocomplete="off" placeholder="Kategori" required name="kategori" class="form-control" value='<?= $data->kategori ?>'>
                   </div>
                 </div>
 

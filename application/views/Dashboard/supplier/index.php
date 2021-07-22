@@ -27,7 +27,10 @@
 					<thead>
 		                <tr>
 		                    <th>No</th>
-		                    <th>Kategori</th>
+		                    <th>Supplier</th>
+							<th>Nomor Handphone</th>
+							<th>Alamat</th>
+							<th>Email</th>
 							<th>Tanggal</th>
                             <th>Action</th>
 		                </tr>
@@ -39,8 +42,11 @@
                     ?>
                     <tr>
                         <td><?= $no ?></td>
-                        <td><?= $value->kategori ?></td>
-						<td><?= $value->created_at ?></td>
+                        <td><?= $value->nama_supplier ?></td>
+						<td><?= $value->nomor_handphone ?></td>
+						<td><?= $value->alamat ?></td>
+						<td><?= $value->email ?></td>
+						<td><?= $value->createdAt ?></td>
                         <td>
 			            	<div class="btn-group" role="group">
 			                    <button type="button" class="btn btn-warning dropdown-toggle" id="exampleIconDropdown1"
@@ -50,13 +56,13 @@
 			                    </button>
 			                    <ul class="dropdown-menu" style="min-width:10px;" aria-labelledby="exampleIconDropdown1" role="menu">
 			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$value->id_kategori);?>">
+			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/edit/'.$value->id_supplier);?>">
 			                      	<i class="icon wb-edit" aria-hidden="true"></i>
 			                      	Edit
 			                      	</a>
 			                      </li>
 			                      <li role="presentation">
-			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/delete/'.$value->id_kategori);?>" onclick="return confirm('Are you sure to delete data ?')">
+			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/delete/'.$value->id_supplier);?>" onclick="return confirm('Are you sure to delete data ?')">
 			                      	<i class="icon wb-close" aria-hidden="true"></i>
 			                      	Hapus
 			                      	</a>

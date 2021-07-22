@@ -22,10 +22,33 @@
             </p>
             <div class="example">
               <form class="form-horizontal" action="<?php echo base_url($linkTo);?>/add_action" method="post">
+                
                 <div class="form-group">
-                  <label class="col-sm-4 control-label">Kategori : </label>
+                  <label class="col-sm-4 control-label">Supplier : </label>
                   <div class="col-sm-8">
-                    <input type="text" autocomplete="off" placeholder="Kategori" required name="kategori" class="form-control" >
+                    <input type="text" autocomplete="off" placeholder="Supplier" required name="supplier" class="form-control" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Nomor Handphone : </label>
+                  <div class="col-sm-8">
+                    <input type="text" autocomplete="off" placeholder="Nomor Handphone" required name="nomor_handphone" class="form-control" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Email : </label>
+                  <div class="col-sm-8">
+                    <input type="text" autocomplete="off" placeholder="Email" required name="email" class="form-control" >
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-4 control-label">Alamat : </label>
+                  <div class="col-sm-8">
+                    <textarea type="text" autocomplete="off" placeholder="alamat" required name="alamat" class="form-control">
+                    </textarea>
                   </div>
                 </div>
 

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Kategori  extends CI_Controller{
+class Supplier  extends CI_Controller{
  
 	function __construct(){
 		parent::__construct();		
@@ -10,10 +10,10 @@ class Kategori  extends CI_Controller{
 	
 	function index(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$query = $this->db->get("ref_kategori")->result();
-			$data = array('contents' => 'Dashboard/kategori/index',
-						  'title'	 => 'Kategori',
-						  'linkTo'	=> 'kategori',
+			$query = $this->db->get("ref_supplier")->result();
+			$data = array('contents' => 'Dashboard/supplier/index',
+						  'title'	 => 'Supplier',
+						  'linkTo'	=> 'Supplier',
 						  'data' 	=> $query
 							);
 				$this->load->view('Layouts/warper', $data);
@@ -26,10 +26,10 @@ class Kategori  extends CI_Controller{
 
 	function edit($id){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$query = $this->db->query("select * from ref_kategori where id_kategori = '$id'")->row();
-			$data = array('contents' => 'Dashboard/kategori/edit',
-						  'title'	 => 'Kategori',
-						  'linkTo'	=> 'kategori',
+			$query = $this->db->query("select * from ref_supplier where id_supplier = '$id'")->row();
+			$data = array('contents' => 'Dashboard/supplier/edit',
+						  'title'	 => 'Supplier',
+						  'linkTo'	=> 'Supplier',
 						  'data' 	=> $query
 							);
 				$this->load->view('Layouts/warper', $data);
@@ -42,9 +42,9 @@ class Kategori  extends CI_Controller{
 
 	public function add(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-				$data = array('contents' => 'Dashboard/kategori/add',
-							'title'	 => 'Kategori',
-							'linkTo'	=> 'kategori',	
+				$data = array('contents' => 'Dashboard/supplier/add',
+							'title'	 => 'Supplier',
+							'linkTo'	=> 'Supplier',	
 							);
 				$this->load->view('Layouts/warper', $data);
 			
@@ -57,9 +57,9 @@ class Kategori  extends CI_Controller{
 	public function delete($id){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
 			$key = array(
-				'id_kategori' => $id,
+				'id_supplier' => $id,
 				);
-			$this->db->delete("ref_kategori",$key);
+			$this->db->delete("ref_supplier",$key);
 			//notif
 			$this->session->set_flashdata("notif","<div class=\"alert alert-alt alert-success alert-dismissible\" role=\"alert\">
 					  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
@@ -69,7 +69,7 @@ class Kategori  extends CI_Controller{
 					  Data Berhasil di hapus.</a>.
 					</div>
 					");
-			redirect('kategori');
+			redirect('supplier');
 			
 		}else{
 			session_destroy();
@@ -79,12 +79,18 @@ class Kategori  extends CI_Controller{
 
 	public function add_action(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$kategori = addslashes($this->input->post('kategori'));
-		 
+			$supplier = addslashes($this->input->post('supplier'));
+            $nomor_handphone = addslashes($this->input->post('nomor_handphone'));
+            $email = addslashes($this->input->post('email'));
+            $alamat = addslashes($this->input->post('alamat'));
+
 				$data = array(
-					'kategori' => $kategori,
+					'nama_supplier' => $supplier,
+                    'nomor_handphone' => $nomor_handphone,
+                    'email' => $email,
+                    'alamat' => $alamat,
 					);
-				$this->db->insert('ref_kategori',$data);
+				$this->db->insert('ref_supplier',$data);
 				//notif
 					$this->session->set_flashdata("notif","<div class=\"alert alert-alt alert-success alert-dismissible\" role=\"alert\">
 					<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
@@ -94,7 +100,7 @@ class Kategori  extends CI_Controller{
 					Data Berhasil di simpan.</a>.
 				</div>
 				");
-				redirect('kategori');
+				redirect('supplier');
 			
 		}else{
 			session_destroy();
@@ -104,14 +110,24 @@ class Kategori  extends CI_Controller{
 
 	public function update_action($id){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$kategori = addslashes($this->input->post('kategori'));
+			
+            $supplier = addslashes($this->input->post('supplier'));
+            $nomor_handphone = addslashes($this->input->post('nomor_handphone'));
+            $email = addslashes($this->input->post('email'));
+            $alamat = addslashes($this->input->post('alamat'));
+
+				$data = array(
+					'nama_supplier' => $supplier,
+                    'nomor_handphone' => $nomor_handphone,
+                    'email' => $email,
+                    'alamat' => $alamat,
+					);
+
 			$key = array(
-			'id_kategori' => $id,
+			'id_supplier' => $id,
 			);
-			$data = array(
-				'kategori' => $kategori,
-				);
-			$this->db->update('ref_kategori',$data,$key);
+			
+			$this->db->update('ref_supplier',$data,$key);
 			
 
 			//notif
@@ -123,7 +139,7 @@ class Kategori  extends CI_Controller{
 					  Data Berhasil di update.</a>.
 					</div>
 					");
-			redirect('kategori');
+			redirect('supplier');
 		}else{
 			session_destroy();
 			redirect('dashboard');
