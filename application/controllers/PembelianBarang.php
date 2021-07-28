@@ -40,7 +40,8 @@ class PembelianBarang extends CI_Controller{
 	function search(){
 		$kode_barang = addslashes($this->input->post('id_barang'));
 		$validasiData = $this->db->query("SELECT
-		ref_pembelian_barang.id_supplier, 
+		ref_pembelian_barang.id_supplier,
+		ref_pembelian_barang.id_kategori, 
 		ref_barang.*
 	FROM
 		ref_pembelian_barang
@@ -228,7 +229,6 @@ class PembelianBarang extends CI_Controller{
 
 				$data = array(
 					'id_barang' => $id_barang,
-                    'id_kategori' => $id_kategori,
                     'id_supplier' => $id_supplier,
                     'nama_barang' => $nama_barang,
                     'jumlah' => $jumlah,
