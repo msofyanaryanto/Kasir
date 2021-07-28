@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2021 at 04:38 PM
+-- Generation Time: Jul 28, 2021 at 05:14 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -45,8 +45,8 @@ CREATE TABLE `ref_barang` (
 --
 
 INSERT INTO `ref_barang` (`id_barang`, `kode_barang`, `nama_barang`, `createdBy`, `stok`, `stok_minimal`, `harga_beli`, `harga_jual`, `createdAt`) VALUES
-(2, 'BRG001', '1', 'admin', 101, 0, 1, 1, '2021-07-27 15:47:48'),
-(3, 'BRG0002', 'Burger', 'admin', 500, 0, 10000, 15000, '2021-07-28 13:05:34'),
+(2, 'BRG001', '1', 'admin', 101, 200, 1, 1, '2021-07-28 15:11:30'),
+(3, 'BRG0002', 'Burger', 'admin', 1300, 0, 10000, 15000, '2021-07-28 14:51:22'),
 (4, 'BRG0003', 'Chicken Dada', 'admin', 900, 0, 1000, 2000, '2021-07-28 13:06:02');
 
 -- --------------------------------------------------------
@@ -525,6 +525,7 @@ CREATE TABLE `ref_pembelian_barang` (
   `jumlah` int(11) NOT NULL,
   `harga_beli` int(11) NOT NULL,
   `harga_jual` int(11) NOT NULL,
+  `jumlah_expired` int(11) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -532,12 +533,14 @@ CREATE TABLE `ref_pembelian_barang` (
 -- Dumping data for table `ref_pembelian_barang`
 --
 
-INSERT INTO `ref_pembelian_barang` (`id_pembelian`, `id_barang`, `id_kategori`, `id_supplier`, `createdBy`, `nama_barang`, `jumlah`, `harga_beli`, `harga_jual`, `createdAt`) VALUES
-(3, '', 0, '', 'admin', '', 0, 0, 0, '2021-07-27 15:46:41'),
-(4, 'BRG001', 0, '1', 'admin', '1', 1, 1, 1, '2021-07-27 15:47:11'),
-(5, 'BRG001', 0, '1', 'admin', '1', 100, 1, 1, '2021-07-27 15:47:48'),
-(6, 'BRG0002', 0, '1', 'admin', 'Burger', 500, 10000, 15000, '2021-07-28 13:05:34'),
-(7, 'BRG0003', 0, '1', 'admin', 'Chicken Dada', 900, 1000, 2000, '2021-07-28 13:06:02');
+INSERT INTO `ref_pembelian_barang` (`id_pembelian`, `id_barang`, `id_kategori`, `id_supplier`, `createdBy`, `nama_barang`, `jumlah`, `harga_beli`, `harga_jual`, `jumlah_expired`, `createdAt`) VALUES
+(3, '', 0, '', 'admin', '', 0, 0, 0, 0, '2021-07-27 15:46:41'),
+(4, 'BRG001', 1, '1', 'admin', '1', 1, 1, 1, 0, '2021-07-28 14:46:36'),
+(5, 'BRG001', 1, '1', 'admin', '1', 100, 1, 1, 0, '2021-07-28 14:46:37'),
+(6, 'BRG0002', 1, '1', 'admin', 'Burger', 500, 10000, 15000, 0, '2021-07-28 14:46:37'),
+(7, 'BRG0003', 0, '1', 'admin', 'Chicken Dada', 900, 1000, 2000, 0, '2021-07-28 13:06:02'),
+(8, 'BRG0005', 1, '1', 'admin', 'TEst', 100, 100, 100, 0, '2021-07-28 14:50:18'),
+(9, 'BRG0002', 1, '1', 'admin', 'Burger', 800, 10000, 15000, 0, '2021-07-28 14:51:22');
 
 -- --------------------------------------------------------
 
@@ -752,7 +755,7 @@ ALTER TABLE `ref_module`
 -- AUTO_INCREMENT for table `ref_pembelian_barang`
 --
 ALTER TABLE `ref_pembelian_barang`
-  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `ref_supplier`
