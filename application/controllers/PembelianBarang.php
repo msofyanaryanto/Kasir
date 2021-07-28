@@ -165,7 +165,7 @@ class PembelianBarang extends CI_Controller{
                     'jumlah' => $jumlah,
                     'harga_beli' => $hargaBeli,
                     'harga_jual' => $hargaJual,
-					'id_user'	=>  $this->session->userdata('username')
+					'createdBy'	=>  $this->session->userdata('username')
 					);
 				$this->db->insert('ref_pembelian_barang',$data);
 				
@@ -189,7 +189,7 @@ class PembelianBarang extends CI_Controller{
 						'stok' => $jumlah,
 						'harga_beli' => $hargaBeli,
 						'harga_jual' => $hargaJual,
-						'id_user'	=>  $this->session->userdata('username')
+						'createdBy'	=>  $this->session->userdata('username')
 						);
 					$this->db->insert('ref_barang',$dataBarang);
 				}
@@ -234,7 +234,7 @@ class PembelianBarang extends CI_Controller{
                     'jumlah' => $jumlah,
                     'harga_beli' => $hargaBeli,
                     'harga_jual' => $hargaJual,
-					'id_user'	=>  $this->session->userdata('username')
+					'createdBy'	=>  $this->session->userdata('username')
 					);
 				
 			$this->db->update('ref_pembelian_barang',$data,$key);

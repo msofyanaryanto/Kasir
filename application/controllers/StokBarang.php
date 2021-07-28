@@ -11,14 +11,19 @@ class StokBarang extends CI_Controller{
 	function index(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
 			$query = $this->db->query("SELECT
-			ref_kategori.kategori, 
-			ref_barang.*
+			db_web.ref_kategori.kategori, 
+			db_web.ref_barang.*, 
+			db_web.ref_pembelian_barang.id_kategori
 		FROM
-			ref_barang
+			db_web.ref_pembelian_barang
 			INNER JOIN
-			ref_kategori
+			db_web.ref_kategori
 			ON 
-				ref_barang.id_kategori = ref_kategori.id_kategori")->result();
+				db_web.ref_pembelian_barang.id_kategori = db_web.ref_kategori.id_kategori
+			INNER JOIN
+			db_web.ref_barang
+			ON 
+				db_web.ref_barang.kode_barang = db_web.ref_pembelian_barang.id_barang")->result();
 			$data = array('contents' => 'Dashboard/stokBarang/index',
 						  'title'	 => 'Data Stok Barang',
 						  'linkTo'	=> 'stokBarang',
