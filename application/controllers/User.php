@@ -86,7 +86,6 @@ class User  extends CI_Controller{
 		 
 				$data = array(
 					'id_group' => $id_group,
-					'gaji' => $gaji,
 					'name_user' => $name_user,
 					'username' => $username,
 					'password' => $password,

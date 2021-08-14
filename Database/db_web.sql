@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 18, 2021 at 04:40 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Generation Time: Aug 14, 2021 at 04:19 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,18 +25,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bonus`
+-- Table structure for table `ref_barang`
 --
--- Error reading structure for table db_web.bonus: #1932 - Table 'db_web.bonus' doesn't exist in engine
--- Error reading data for table db_web.bonus: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `db_web`.`bonus`' at line 1
 
--- --------------------------------------------------------
+CREATE TABLE `ref_barang` (
+  `id_barang` int(11) NOT NULL,
+  `kode_barang` varchar(100) NOT NULL,
+  `nama_barang` varchar(100) NOT NULL,
+  `createdBy` varchar(20) NOT NULL,
+  `stok` int(50) NOT NULL,
+  `stok_minimal` int(50) NOT NULL,
+  `harga_beli` int(11) NOT NULL,
+  `harga_jual` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Table structure for table `customers`
+-- Dumping data for table `ref_barang`
 --
--- Error reading structure for table db_web.customers: #1932 - Table 'db_web.customers' doesn't exist in engine
--- Error reading data for table db_web.customers: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `db_web`.`customers`' at line 1
+
+INSERT INTO `ref_barang` (`id_barang`, `kode_barang`, `nama_barang`, `createdBy`, `stok`, `stok_minimal`, `harga_beli`, `harga_jual`, `createdAt`) VALUES
+(2, 'BRG001', '1', 'admin', 93, 200, 1, 1, '2021-08-14 13:43:54'),
+(3, 'BRG0002', 'Burger', 'admin', 1286, 0, 10000, 15000, '2021-08-14 14:13:25'),
+(4, 'BRG0003', 'Chicken Dada', 'admin', 784, 0, 1000, 2000, '2021-08-14 14:13:29');
 
 -- --------------------------------------------------------
 
@@ -56,7 +68,7 @@ CREATE TABLE `ref_group` (
 
 INSERT INTO `ref_group` (`id_group`, `name_group`, `create_at`, `modified_at`) VALUES
 (1, 'Administrator', '2016-08-21 04:10:11', '2017-03-05 22:46:52'),
-(2, 'User', '2018-08-02 17:40:51', '0000-00-00 00:00:00');
+(3, 'Kasir', '2021-08-14 20:32:26', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -444,16 +456,37 @@ INSERT INTO `ref_icon` (`id_icon`, `name_icon`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ref_kategori`
+--
+
+CREATE TABLE `ref_kategori` (
+  `id_kategori` int(11) NOT NULL,
+  `kategori` varchar(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ref_kategori`
+--
+
+INSERT INTO `ref_kategori` (`id_kategori`, `kategori`, `created_at`) VALUES
+(1, 'Makanan', '2021-07-10 09:18:30'),
+(3, 'Minuman', '2021-07-10 09:49:05'),
+(4, 'Other', '2021-07-10 09:53:15');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ref_module`
 --
 
 CREATE TABLE `ref_module` (
   `id_module` int(11) NOT NULL,
-  `id_parent` int(11) NOT NULL DEFAULT 0,
+  `id_parent` int(11) NOT NULL DEFAULT '0',
   `name_module` varchar(225) NOT NULL,
   `name_controller` varchar(225) NOT NULL,
   `icon` varchar(100) NOT NULL,
-  `sort` int(3) NOT NULL DEFAULT 0,
+  `sort` int(3) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `modified_at` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -466,46 +499,76 @@ INSERT INTO `ref_module` (`id_module`, `id_parent`, `name_module`, `name_control
 (1, 0, 'Configuration Users', '#', 'cogs', 100, '2016-08-24 00:00:00', '2016-09-05 14:12:47'),
 (2, 1, 'Group management', 'group', 'sitemap', 2, '2016-08-24 00:00:00', '2018-08-02 17:35:13'),
 (3, 1, 'User management', 'user', 'users', 3, '2016-08-24 00:00:00', '2018-08-02 17:35:47'),
-(64, 0, 'Penawaran Harga', '#', 'dollar', 2, '2021-01-15 12:44:45', '0000-00-00 00:00:00'),
-(63, 0, 'Master Data', '#', 'database', 1, '2021-01-15 12:42:35', '0000-00-00 00:00:00'),
-(65, 0, 'PO Customer', '#', 'file-powerpoint-o', 3, '2021-01-15 12:45:48', '0000-00-00 00:00:00'),
-(66, 0, 'PO Supplier', '#', 'file-powerpoint-o', 4, '2021-01-15 12:46:14', '0000-00-00 00:00:00'),
-(67, 0, 'Delivery Order', '#', 'folder-open-o', 5, '2021-01-15 12:46:39', '0000-00-00 00:00:00'),
-(68, 0, 'Invoice', '#', 'briefcase', 6, '2021-01-15 12:47:03', '0000-00-00 00:00:00'),
-(69, 0, 'Report', '#', 'folder-o', 7, '2021-01-15 12:47:24', '0000-00-00 00:00:00'),
-(70, 0, 'Dashboard', '#', 'tachometer', 0, '2021-01-15 12:48:56', '0000-00-00 00:00:00'),
-(71, 64, 'Form Penawaran Harga', 'penawaranHarga', 'pencil-square-o', 1, '2021-01-15 12:52:07', '0000-00-00 00:00:00'),
-(72, 64, 'List Request PH', 'requestPH', 'circle-thin', 2, '2021-01-15 12:52:54', '0000-00-00 00:00:00'),
-(73, 64, 'List Revisi PH', 'revisiPH', 'circle-thin', 3, '2021-01-15 12:53:32', '0000-00-00 00:00:00'),
-(74, 64, ':List Penawaran Harga', 'penawaranHarga', 'circle-thin', 4, '2021-01-15 12:54:04', '0000-00-00 00:00:00'),
-(75, 65, 'Form PO Customer', 'poCustomer', 'circle-o', 1, '2021-01-15 16:38:34', '0000-00-00 00:00:00'),
-(76, 65, 'List PO Customer', 'listPOCustomer', 'circle-o', 2, '2021-01-15 16:39:20', '0000-00-00 00:00:00'),
-(77, 66, 'Form PO Supplier', 'poSupplier', 'circle-o', 1, '2021-01-15 16:40:05', '0000-00-00 00:00:00'),
-(78, 66, 'List Request Supplier', 'requestSupplier', 'circle-o', 2, '2021-01-15 16:40:50', '0000-00-00 00:00:00'),
-(79, 66, 'List Revisi PO', 'revisiPO', 'circle-o', 3, '2021-01-15 16:41:24', '0000-00-00 00:00:00'),
-(80, 66, 'List PO Supplier', 'listPOSupplier', 'circle-o', 4, '2021-01-15 16:42:00', '0000-00-00 00:00:00'),
-(81, 66, 'Penerimaan Barang', 'penerimaanBarang', 'circle-o', 5, '2021-01-15 16:42:31', '0000-00-00 00:00:00'),
-(82, 67, 'Form Delivery Order', 'deliveryOrder', 'circle-o', 1, '2021-01-15 16:43:42', '0000-00-00 00:00:00'),
-(83, 67, 'List Delivery Order', 'listDeliveryOrder', 'circle-o', 2, '2021-01-15 16:44:25', '0000-00-00 00:00:00'),
-(84, 68, 'Form PO Customer', 'invoicePOCustomer', 'circle-o', 1, '2021-01-15 16:46:02', '0000-00-00 00:00:00'),
-(85, 68, 'List invoice', 'invoice', 'circle-o', 2, '2021-01-15 16:54:21', '0000-00-00 00:00:00'),
-(86, 68, 'Monitoring Invoice', 'monitoringInvoice', 'circle-o', 3, '2021-01-15 16:54:50', '0000-00-00 00:00:00'),
-(87, 63, 'Brand', 'Brand', 'circle-o', 1, '2021-01-15 16:55:54', '0000-00-00 00:00:00'),
-(88, 63, 'Company Type', 'companyType', 'circle-o', 2, '2021-01-15 16:56:22', '0000-00-00 00:00:00'),
-(89, 63, 'Customers', 'customer', 'circle-o', 3, '2021-01-15 16:56:58', '0000-00-00 00:00:00'),
-(90, 63, 'Delivery Address', 'deliveryAddress', 'circle-o', 4, '2021-01-15 16:57:45', '0000-00-00 00:00:00'),
-(91, 63, 'Delivery Agent', 'deliveryAgent', 'circle-o', 5, '2021-01-15 16:58:22', '0000-00-00 00:00:00'),
-(92, 63, 'Delivery Time', 'deliveryTime', 'circle-o', 6, '2021-01-15 16:59:03', '0000-00-00 00:00:00'),
-(93, 63, 'Delivery Type', 'deliveryType', 'circle-o', 7, '2021-01-15 16:59:36', '0000-00-00 00:00:00'),
-(94, 63, 'DO Status', 'doStatus', 'circle-o', 8, '2021-01-15 17:00:08', '0000-00-00 00:00:00'),
-(95, 63, 'Invoice Status', 'invoiceStatus', 'circle-o', 9, '2021-01-15 17:00:42', '0000-00-00 00:00:00'),
-(96, 63, 'Products', 'products', 'circle-o', 10, '2021-01-15 17:01:14', '0000-00-00 00:00:00'),
-(97, 63, 'Products PO', 'productPO', 'circle-o', 11, '2021-01-15 17:01:50', '0000-00-00 00:00:00'),
-(98, 63, 'Sales', 'sales', 'circle-o', 12, '2021-01-15 17:02:14', '0000-00-00 00:00:00'),
-(99, 63, 'Suppliers', 'suppliers', 'circle-o', 13, '2021-01-15 17:02:54', '0000-00-00 00:00:00'),
-(100, 63, 'Term Of Payment', 'termOfPayment', 'circle-o', 14, '2021-01-15 17:03:35', '0000-00-00 00:00:00'),
-(101, 63, 'Type', 'type', 'circle-o', 15, '2021-01-15 17:03:55', '0000-00-00 00:00:00'),
-(102, 63, 'Validity', 'validity', 'circle-o', 16, '2021-01-15 17:04:25', '0000-00-00 00:00:00');
+(112, 0, 'Laporan', 'laporan', 'file-code-o', 5, '2021-07-05 21:05:13', '2021-07-05 21:05:22'),
+(111, 0, 'Transaksi', 'transaksi', 'cart-plus', 4, '2021-07-05 21:04:29', '2021-07-05 21:04:38'),
+(110, 0, 'Stok Barang', 'stokBarang', 'archive', 3, '2021-07-05 21:02:44', '2021-07-05 21:06:46'),
+(109, 104, 'Pembelian Barang', 'pembelianBarang', 'circle', 4, '2021-07-05 21:02:24', '0000-00-00 00:00:00'),
+(108, 104, 'Supplier', 'supplier', 'circle', 2, '2021-07-05 21:01:54', '2021-07-05 21:03:50'),
+(106, 104, 'Barang', 'barang', 'circle', 3, '2021-07-05 20:58:48', '2021-07-05 21:01:16'),
+(105, 104, 'Kategori', 'kategori', 'circle', 1, '2021-07-05 20:58:17', '0000-00-00 00:00:00'),
+(104, 0, 'Master Data', '#', 'gear', 1, '2021-07-05 20:57:36', '0000-00-00 00:00:00'),
+(103, 0, 'Dashboard', 'dashboard', 'dashboard', 0, '2021-07-05 20:56:52', '2021-07-05 20:57:02'),
+(113, 0, 'Dashboard', 'User/Dashboard', 'dashboard', 1, '2021-08-14 20:30:34', '2021-08-14 20:37:59'),
+(114, 0, 'Transaksi', 'User/Transaksi', 'cart-plus', 2, '2021-08-14 20:31:20', '2021-08-14 20:31:30'),
+(115, 0, 'Laporan', 'User/Laporan', 'file-powerpoint-o', 3, '2021-08-14 20:31:59', '2021-08-14 21:18:08'),
+(116, 112, 'Laporan Transaksi', 'LaporanTransaksi', 'circle', 1, '2021-08-14 21:15:51', '0000-00-00 00:00:00'),
+(117, 112, 'Laporan Pembelian Barang', 'LaporanPembelian', 'circle', 2, '2021-08-14 21:16:31', '0000-00-00 00:00:00'),
+(118, 112, 'Laporan Stok', 'LaporanStok', 'circle', 3, '2021-08-14 21:16:55', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ref_pembelian_barang`
+--
+
+CREATE TABLE `ref_pembelian_barang` (
+  `id_pembelian` int(11) NOT NULL,
+  `id_barang` varchar(50) NOT NULL,
+  `id_kategori` int(11) NOT NULL,
+  `id_supplier` varchar(50) NOT NULL,
+  `createdBy` varchar(20) NOT NULL,
+  `nama_barang` varchar(225) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `harga_beli` int(11) NOT NULL,
+  `harga_jual` int(11) NOT NULL,
+  `jumlah_expired` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ref_pembelian_barang`
+--
+
+INSERT INTO `ref_pembelian_barang` (`id_pembelian`, `id_barang`, `id_kategori`, `id_supplier`, `createdBy`, `nama_barang`, `jumlah`, `harga_beli`, `harga_jual`, `jumlah_expired`, `createdAt`) VALUES
+(3, '', 0, '', 'admin', '', 0, 0, 0, 0, '2021-07-27 15:46:41'),
+(4, 'BRG001', 1, '1', 'admin', '1', 1, 1, 1, 0, '2021-07-28 14:46:36'),
+(5, 'BRG001', 1, '1', 'admin', '1', 100, 1, 1, 0, '2021-07-28 14:46:37'),
+(6, 'BRG0002', 1, '1', 'admin', 'Burger', 500, 10000, 15000, 0, '2021-07-28 14:46:37'),
+(7, 'BRG0003', 0, '1', 'admin', 'Chicken Dada', 900, 1000, 2000, 0, '2021-07-28 13:06:02'),
+(8, 'BRG0005', 1, '1', 'admin', 'TEst', 100, 100, 100, 0, '2021-07-28 14:50:18'),
+(9, 'BRG0002', 1, '1', 'admin', 'Burger', 800, 10000, 15000, 0, '2021-07-28 14:51:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ref_supplier`
+--
+
+CREATE TABLE `ref_supplier` (
+  `id_supplier` int(11) NOT NULL,
+  `nama_supplier` varchar(50) NOT NULL,
+  `nomor_handphone` varchar(20) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `alamat` varchar(225) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ref_supplier`
+--
+
+INSERT INTO `ref_supplier` (`id_supplier`, `nama_supplier`, `nomor_handphone`, `email`, `alamat`, `createdAt`) VALUES
+(1, 'PT. HAYUUk', '081288829921', 'hayuk@gmail.com', 'Jl. Gading Indah Utara VIII Blok NH14 No.9, RT.26/RW.12, Pegangsaan Dua, Kec. Klp. Gading, Kota Jkt Utara, Daerah Khusus Ibukota Jakarta 14250', '2021-07-10 10:07:17');
 
 -- --------------------------------------------------------
 
@@ -516,7 +579,6 @@ INSERT INTO `ref_module` (`id_module`, `id_parent`, `name_module`, `name_control
 CREATE TABLE `ref_user` (
   `id_user` int(11) NOT NULL,
   `id_group` int(11) NOT NULL,
-  `gaji` bigint(20) NOT NULL,
   `name_user` varchar(225) NOT NULL,
   `username` varchar(225) NOT NULL,
   `password` varchar(225) NOT NULL,
@@ -528,16 +590,9 @@ CREATE TABLE `ref_user` (
 -- Dumping data for table `ref_user`
 --
 
-INSERT INTO `ref_user` (`id_user`, `id_group`, `gaji`, `name_user`, `username`, `password`, `created_at`, `modified_at`) VALUES
-(1, 1, 0, 'Administrator', 'admin', 'c3284d0f94606de1fd2af172aba15bf3', '2016-08-21 00:00:00', '0000-00-00 00:00:00'),
-(3, 2, 3000000, 'Ahmad', 'ahmad', '19da52afc75eddcc00e951b9a8f22bb8', '2018-08-03 04:42:40', '0000-00-00 00:00:00'),
-(4, 2, 3100000, 'Ani', 'ani', '778bd9bb3ed2c535dc1b4c9916e0bbe1', '2018-08-03 04:43:16', '0000-00-00 00:00:00'),
-(5, 2, 2500000, 'Budi', 'budi', '3074d9b7ba24b27d9ae573e9c021a487', '2018-08-03 04:43:51', '0000-00-00 00:00:00'),
-(6, 2, 4500000, 'Dedi', 'dedi', '643ce26cbd170209c48f424e0f568d95', '2018-08-03 04:45:17', '0000-00-00 00:00:00'),
-(7, 2, 4000000, 'Eni', 'eni', 'c4e64f52b9b04e4612428ba9be4745d7', '2018-08-03 04:45:51', '0000-00-00 00:00:00'),
-(8, 2, 2900000, 'Fitri', 'fitri', 'cc64d9da75a1414a49ea891f29f46e38', '2018-08-03 04:46:21', '0000-00-00 00:00:00'),
-(9, 2, 3500000, 'Galih', 'Galih', '0cf6b734bf713f2cc4a6f568e185a0e9', '2018-08-03 04:46:55', '0000-00-00 00:00:00'),
-(12, 1, 1000000, 'Muhamad Sof', '123', 'd9b1d7db4cd6e70935368a1efb10e377', '2018-11-05 14:29:07', '0000-00-00 00:00:00');
+INSERT INTO `ref_user` (`id_user`, `id_group`, `name_user`, `username`, `password`, `created_at`, `modified_at`) VALUES
+(1, 1, 'Administrator', 'admin', 'c3284d0f94606de1fd2af172aba15bf3', '2016-08-21 00:00:00', '0000-00-00 00:00:00'),
+(13, 3, 'Muhamad Sopian Aryanto', 'kasir', '59b8f19e2e140a1f7829b116219b6497', '2021-08-14 20:34:36', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -549,13 +604,13 @@ CREATE TABLE `ref_user_access` (
   `id_user_access` int(11) NOT NULL,
   `id_group` int(11) NOT NULL,
   `id_module` int(11) NOT NULL,
-  `akses` int(1) NOT NULL DEFAULT 0,
-  `tambah` int(1) NOT NULL DEFAULT 0,
-  `lihat` int(1) NOT NULL DEFAULT 0,
-  `edit` int(1) NOT NULL DEFAULT 0,
-  `hapus` int(1) NOT NULL DEFAULT 0,
-  `ex_excel` int(1) NOT NULL DEFAULT 0,
-  `ex_pdf` int(1) NOT NULL DEFAULT 0,
+  `akses` int(1) NOT NULL DEFAULT '0',
+  `tambah` int(1) NOT NULL DEFAULT '0',
+  `lihat` int(1) NOT NULL DEFAULT '0',
+  `edit` int(1) NOT NULL DEFAULT '0',
+  `hapus` int(1) NOT NULL DEFAULT '0',
+  `ex_excel` int(1) NOT NULL DEFAULT '0',
+  `ex_pdf` int(1) NOT NULL DEFAULT '0',
   `id_parent` int(11) NOT NULL,
   `create_at` datetime NOT NULL,
   `modified_at` datetime NOT NULL
@@ -566,96 +621,141 @@ CREATE TABLE `ref_user_access` (
 --
 
 INSERT INTO `ref_user_access` (`id_user_access`, `id_group`, `id_module`, `akses`, `tambah`, `lihat`, `edit`, `hapus`, `ex_excel`, `ex_pdf`, `id_parent`, `create_at`, `modified_at`) VALUES
-(1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, '2016-08-24 00:00:00', '2021-01-15 17:05:07'),
-(2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1, '2016-08-24 00:00:00', '2021-01-15 17:05:07'),
-(3, 1, 3, 1, 1, 1, 1, 1, 0, 0, 1, '2016-08-24 00:00:00', '2021-01-15 17:05:07'),
-(288, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(289, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(290, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(298, 1, 64, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(297, 0, 64, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(296, 1, 63, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(295, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(299, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(300, 1, 65, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(301, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(302, 1, 66, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(303, 0, 67, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(304, 1, 67, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(305, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(306, 1, 68, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(307, 0, 69, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(308, 1, 69, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(309, 0, 70, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(310, 1, 70, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(311, 0, 71, 0, 0, 0, 0, 0, 0, 0, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(312, 1, 71, 1, 1, 1, 1, 1, 1, 1, 64, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(313, 0, 72, 0, 0, 0, 0, 0, 0, 0, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(314, 1, 72, 1, 1, 1, 1, 1, 1, 1, 64, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(315, 0, 73, 0, 0, 0, 0, 0, 0, 0, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(316, 1, 73, 1, 1, 1, 1, 1, 1, 1, 64, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(317, 0, 74, 0, 0, 0, 0, 0, 0, 0, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(318, 1, 74, 1, 1, 1, 1, 1, 1, 1, 64, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(319, 0, 75, 0, 0, 0, 0, 0, 0, 0, 65, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(320, 1, 75, 1, 1, 1, 1, 1, 1, 1, 65, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(321, 0, 76, 0, 0, 0, 0, 0, 0, 0, 65, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(322, 1, 76, 1, 1, 1, 1, 1, 1, 1, 65, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(323, 0, 77, 0, 0, 0, 0, 0, 0, 0, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(324, 1, 77, 1, 1, 1, 1, 1, 1, 1, 66, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(325, 0, 78, 0, 0, 0, 0, 0, 0, 0, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(326, 1, 78, 1, 1, 1, 1, 1, 1, 1, 66, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(327, 0, 79, 0, 0, 0, 0, 0, 0, 0, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(328, 1, 79, 1, 1, 1, 1, 1, 1, 1, 66, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(329, 0, 80, 0, 0, 0, 0, 0, 0, 0, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(330, 1, 80, 1, 1, 1, 1, 1, 1, 1, 66, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(331, 0, 81, 0, 0, 0, 0, 0, 0, 0, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(332, 1, 81, 1, 1, 1, 1, 1, 1, 1, 66, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(333, 0, 82, 0, 0, 0, 0, 0, 0, 0, 67, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(334, 1, 82, 1, 1, 1, 1, 1, 1, 1, 67, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(335, 0, 83, 0, 0, 0, 0, 0, 0, 0, 67, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(336, 1, 83, 1, 1, 1, 1, 1, 1, 1, 67, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(337, 0, 84, 0, 0, 0, 0, 0, 0, 0, 68, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(338, 1, 84, 1, 1, 1, 1, 1, 1, 1, 68, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(339, 0, 85, 0, 0, 0, 0, 0, 0, 0, 68, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(340, 1, 85, 1, 1, 1, 1, 1, 1, 1, 68, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(341, 0, 86, 0, 0, 0, 0, 0, 0, 0, 68, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(342, 1, 86, 1, 1, 1, 1, 1, 1, 1, 68, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(343, 0, 87, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(344, 1, 87, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(345, 0, 88, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(346, 1, 88, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(347, 0, 89, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(348, 1, 89, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(349, 0, 90, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(350, 1, 90, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(351, 0, 91, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(352, 1, 91, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(353, 0, 92, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(354, 1, 92, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(355, 0, 93, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(356, 1, 93, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(357, 0, 94, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(358, 1, 94, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(359, 0, 95, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(360, 1, 95, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(361, 0, 96, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(362, 1, 96, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(363, 0, 97, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(364, 1, 97, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(365, 0, 98, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(366, 1, 98, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(367, 0, 99, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(368, 1, 99, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(369, 0, 100, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(370, 1, 100, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(371, 0, 101, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(372, 1, 101, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07'),
-(373, 0, 102, 0, 0, 0, 0, 0, 0, 0, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(374, 1, 102, 1, 1, 1, 1, 1, 1, 1, 63, '0000-00-00 00:00:00', '2021-01-15 17:05:07');
+(1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, '2016-08-24 00:00:00', '2021-08-14 21:17:12'),
+(2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1, '2016-08-24 00:00:00', '2021-08-14 21:17:12'),
+(3, 1, 3, 1, 1, 1, 1, 1, 0, 0, 1, '2016-08-24 00:00:00', '2021-08-14 21:17:12'),
+(384, 1, 112, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(383, 1, 111, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(382, 1, 110, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(381, 1, 109, 1, 1, 1, 1, 1, 1, 1, 104, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(380, 1, 108, 1, 1, 1, 1, 1, 1, 1, 104, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(378, 1, 106, 1, 1, 1, 1, 1, 1, 1, 104, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(377, 1, 105, 1, 1, 1, 1, 1, 1, 1, 104, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(376, 1, 104, 1, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(375, 1, 103, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(385, 1, 113, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(386, 1, 114, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(387, 1, 115, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(388, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(389, 3, 2, 0, 0, 0, 0, 0, 0, 0, 1, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(390, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(391, 3, 112, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(392, 3, 111, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(393, 3, 110, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(394, 3, 109, 0, 0, 0, 0, 0, 0, 0, 104, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(395, 3, 108, 0, 0, 0, 0, 0, 0, 0, 104, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(396, 3, 106, 0, 0, 0, 0, 0, 0, 0, 104, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(397, 3, 105, 0, 0, 0, 0, 0, 0, 0, 104, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(398, 3, 104, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(399, 3, 103, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(400, 3, 113, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(401, 3, 114, 0, 0, 0, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(402, 3, 115, 1, 1, 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2021-08-14 20:37:15'),
+(403, 1, 116, 1, 1, 1, 1, 1, 1, 1, 112, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(404, 3, 116, 0, 0, 0, 0, 0, 0, 0, 112, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(405, 1, 117, 1, 1, 1, 1, 1, 1, 1, 112, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(406, 3, 117, 0, 0, 0, 0, 0, 0, 0, 112, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(407, 1, 118, 1, 1, 1, 1, 1, 1, 1, 112, '0000-00-00 00:00:00', '2021-08-14 21:17:12'),
+(408, 3, 118, 0, 0, 0, 0, 0, 0, 0, 112, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tr_detail_transaksi`
+--
+
+CREATE TABLE `tr_detail_transaksi` (
+  `detail_transaksi_id` int(11) NOT NULL,
+  `noStruk` varchar(50) NOT NULL,
+  `barangId` varchar(12) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `total_harga` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tr_detail_transaksi`
+--
+
+INSERT INTO `tr_detail_transaksi` (`detail_transaksi_id`, `noStruk`, `barangId`, `jumlah`, `status`, `harga`, `total_harga`, `createdAt`) VALUES
+(1, 'STR001', 'BRG001', 1, '', 1, 1, '2021-08-14 13:41:36'),
+(2, 'STR001', 'BRG0002', 1, '', 15000, 15000, '2021-08-14 13:41:40'),
+(3, 'STR002', 'BRG001', 1, '', 1, 1, '2021-08-14 13:43:54'),
+(4, 'STR003', 'BRG0002', 2, '', 15000, 30000, '2021-08-14 14:07:59'),
+(5, 'STR003', 'BRG0003', 10, '', 2000, 20000, '2021-08-14 14:08:12'),
+(6, 'STR004', 'BRG0002', 3, '', 15000, 45000, '2021-08-14 14:13:25'),
+(7, 'STR004', 'BRG0003', 4, '', 2000, 8000, '2021-08-14 14:13:29');
+
+--
+-- Triggers `tr_detail_transaksi`
+--
+DELIMITER $$
+CREATE TRIGGER `DeleteBarang` AFTER DELETE ON `tr_detail_transaksi` FOR EACH ROW BEGIN
+
+   UPDATE ref_barang SET stok = stok + OLD.jumlah
+
+   WHERE kode_barang = OLD.barangId;
+
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `UpdateBarang` AFTER UPDATE ON `tr_detail_transaksi` FOR EACH ROW BEGIN
+
+   UPDATE ref_barang SET stok = stok - OLD.jumlah -  NEW.jumlah
+
+   WHERE kode_barang = NEW.barangId;
+
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insertBarang` AFTER INSERT ON `tr_detail_transaksi` FOR EACH ROW BEGIN
+
+   UPDATE ref_barang SET stok = stok - NEW.jumlah
+
+   WHERE kode_barang = NEW.barangId;
+
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tr_transaksi`
+--
+
+CREATE TABLE `tr_transaksi` (
+  `no_struk` varchar(100) NOT NULL,
+  `id_transaksi` int(11) NOT NULL,
+  `createdBy` varchar(20) NOT NULL,
+  `total` bigint(20) NOT NULL,
+  `status` varchar(14) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tr_transaksi`
+--
+
+INSERT INTO `tr_transaksi` (`no_struk`, `id_transaksi`, `createdBy`, `total`, `status`, `createdAt`) VALUES
+('STR001', 2, 'admin', 15001, 'Sudah Bayar', '2021-08-14 13:41:42'),
+('STR002', 3, 'admin', 1, 'Sudah Bayar', '2021-08-14 13:43:57'),
+('STR003', 4, 'admin', 50000, 'Sudah Bayar', '2021-08-14 14:08:17'),
+('STR004', 5, 'admin', 53000, 'Sudah Bayar', '2021-08-14 14:13:32');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ref_barang`
+--
+ALTER TABLE `ref_barang`
+  ADD PRIMARY KEY (`id_barang`);
 
 --
 -- Indexes for table `ref_group`
@@ -664,11 +764,29 @@ ALTER TABLE `ref_group`
   ADD PRIMARY KEY (`id_group`);
 
 --
+-- Indexes for table `ref_kategori`
+--
+ALTER TABLE `ref_kategori`
+  ADD PRIMARY KEY (`id_kategori`);
+
+--
 -- Indexes for table `ref_module`
 --
 ALTER TABLE `ref_module`
   ADD PRIMARY KEY (`id_module`),
   ADD UNIQUE KEY `id_module` (`id_module`);
+
+--
+-- Indexes for table `ref_pembelian_barang`
+--
+ALTER TABLE `ref_pembelian_barang`
+  ADD PRIMARY KEY (`id_pembelian`);
+
+--
+-- Indexes for table `ref_supplier`
+--
+ALTER TABLE `ref_supplier`
+  ADD PRIMARY KEY (`id_supplier`);
 
 --
 -- Indexes for table `ref_user`
@@ -683,32 +801,80 @@ ALTER TABLE `ref_user_access`
   ADD PRIMARY KEY (`id_user_access`);
 
 --
+-- Indexes for table `tr_detail_transaksi`
+--
+ALTER TABLE `tr_detail_transaksi`
+  ADD PRIMARY KEY (`detail_transaksi_id`);
+
+--
+-- Indexes for table `tr_transaksi`
+--
+ALTER TABLE `tr_transaksi`
+  ADD PRIMARY KEY (`id_transaksi`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `ref_barang`
+--
+ALTER TABLE `ref_barang`
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ref_group`
 --
 ALTER TABLE `ref_group`
-  MODIFY `id_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `ref_kategori`
+--
+ALTER TABLE `ref_kategori`
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ref_module`
 --
 ALTER TABLE `ref_module`
-  MODIFY `id_module` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id_module` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+
+--
+-- AUTO_INCREMENT for table `ref_pembelian_barang`
+--
+ALTER TABLE `ref_pembelian_barang`
+  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `ref_supplier`
+--
+ALTER TABLE `ref_supplier`
+  MODIFY `id_supplier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `ref_user`
 --
 ALTER TABLE `ref_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `ref_user_access`
 --
 ALTER TABLE `ref_user_access`
-  MODIFY `id_user_access` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375;
+  MODIFY `id_user_access` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=409;
+
+--
+-- AUTO_INCREMENT for table `tr_detail_transaksi`
+--
+ALTER TABLE `tr_detail_transaksi`
+  MODIFY `detail_transaksi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tr_transaksi`
+--
+ALTER TABLE `tr_transaksi`
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

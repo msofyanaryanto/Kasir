@@ -122,7 +122,7 @@ class Transaksi  extends CI_Controller{
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
 			$user = $this->session->userdata('username');
 			// get data for validasi
-			$dataTransaksi = $this->db->query("select * from tr_transaksi where no_struk  = '$id' ")->row();
+			
 			$dataTransaksiDetail = $this->db->query("select * from tr_detail_transaksi where noStruk  = '$id'")->result();
 			$total = $this->db->query("select sum(total_harga) as total  from tr_detail_transaksi where noStruk = '$id'");
 			$key = array(
@@ -134,7 +134,7 @@ class Transaksi  extends CI_Controller{
 			);
 
 			$this->db->update("tr_transaksi",$updateData,$key);	
-			
+			$dataTransaksi = $this->db->query("select * from tr_transaksi where no_struk  = '$id' ")->row();
 			$data = array(
 						  'data' 	=> $dataTransaksi,
 						  'data_detail' => $dataTransaksiDetail,
