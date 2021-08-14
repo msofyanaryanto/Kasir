@@ -4,16 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Transaksi  extends CI_Controller{
  
 	function __construct(){
-		parent::__construct();		
+		parent::__construct();	
+		$this->load->helper('rupiah_helper');
 	}
 
 	
 	function index(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$query = $this->db->query("select kode_barang, nama_barang , stok from ref_barang where stok > 0")->result();
-			
+			$query = $this->db->query("select kode_barang, nama_barang , stok, harga_jual from ref_barang where stok > 0")->result();
+			$id = $this->session->userdata('username');
+
 			// generate kode struk
-			$struk = $this->db->query("select  max(no_struk) as maxKode from tr_transaksi");
+			$struk = $this->db->query("select  max(no_struk) as maxKode from tr_transaksi ");
 			$cek = $struk->num_rows();
 			$kode = $struk->row()->maxKode;
 			$noUrut = (int) substr($kode, 3, 3);
@@ -22,14 +24,125 @@ class Transaksi  extends CI_Controller{
 			$newID = $char . sprintf("%03s", $noUrut);
 			// tutup generate
 
+			// validasi struk
+			$dataTransaksi = $this->db->query("select no_struk from tr_transaksi where status='Belum Bayar' and createdBy = '$id'");
+			if($dataTransaksi->num_rows() < 1){
+				$oldId = $newID;
+			}else{
+				$struk = $dataTransaksi->row();
+				$oldId = $struk->no_struk;
+			}
+
+			$dataKeranjang = $this->db->query("select * from tr_detail_transaksi where noStruk = '$oldId'");
+			$total = $this->db->query("select sum(total_harga) as total  from tr_detail_transaksi where noStruk = '$oldId'");
+
+
+
 			$data = array('contents' => 'Dashboard/transaksi/index',
 						  'title'	 => 'Transaksi',
 						  'linkTo'	=> 'transaksi',
 						  'data' 	=> $query,
-						  'no_struk' => $newID
+						  'no_struk' => $oldId,
+						  'data_keranjang' => $dataKeranjang->result(),
+						  'total' => $total->row()->total
 							);
 				$this->load->view('Layouts/warper', $data);
 			
+		}else{
+			session_destroy();
+			redirect('dashboard');
+		}
+	}
+
+	function deleteBarang($id){
+		if($this->session->userdata('name_user') and $this->session->userdata('username')){
+
+			$key = array(
+				"detail_transaksi_id" => $id,
+			);
+			$this->db->delete("tr_detail_transaksi",$key);
+				redirect('transaksi');
+			
+		}else{
+			session_destroy();
+			redirect('dashboard');
+		}
+	}
+
+
+
+	function addProd($id,$noStruk,$harga){
+		if($this->session->userdata('name_user') and $this->session->userdata('username')){
+			$user = $this->session->userdata('username');
+			// get data for validasi
+			$dataTransaksi = $this->db->query("select id_transaksi from tr_transaksi where no_struk  = '$noStruk' and status='Belum Bayar'")->num_rows();
+			$dataTransaksiDetail = $this->db->query("select detail_transaksi_id, jumlah, barangId from tr_detail_transaksi where noStruk  = '$noStruk' and barangId='$id'");
+			$dataDetail = array(
+				"barangId" => $id,
+				"noStruk" => $noStruk,
+				"harga" => $harga,
+				"jumlah" => 1,
+				"total_harga" => $harga
+			);
+			$dataV = array(
+				"status" => "Belum Bayar",
+				"no_struk" => $noStruk,
+				"createdBy" => $this->session->userdata('username')
+			);
+
+			$key = array(
+				"detail_transaksi_id" => $dataTransaksiDetail->row()->detail_transaksi_id,
+			);
+			$total = $dataTransaksiDetail->row()->jumlah + 1;
+			$updateData = array(
+				"jumlah" => $total,
+				"total_harga" => $total * $harga
+			);
+
+			if($dataTransaksi < 1){
+				$this->db->insert("tr_transaksi", $dataV);
+			}
+			if($dataTransaksiDetail->num_rows() < 1){
+				$this->db->insert("tr_detail_transaksi", $dataDetail);
+			}else{
+				$this->db->update("tr_detail_transaksi",$updateData,$key);
+			}
+		
+				$this->load->view('Layouts/warper', $data);
+				redirect('transaksi');
+			
+		}else{
+			session_destroy();
+			redirect('dashboard');
+		}
+	}
+
+
+	function bayar($id){
+		if($this->session->userdata('name_user') and $this->session->userdata('username')){
+			$user = $this->session->userdata('username');
+			// get data for validasi
+			$dataTransaksi = $this->db->query("select * from tr_transaksi where no_struk  = '$id' ")->row();
+			$dataTransaksiDetail = $this->db->query("select * from tr_detail_transaksi where noStruk  = '$id'")->result();
+			$total = $this->db->query("select sum(total_harga) as total  from tr_detail_transaksi where noStruk = '$id'");
+			$key = array(
+				"no_struk" => $id,
+			);
+			$updateData = array(
+				"status" =>"Sudah Bayar",
+				"total" => $total->row()->total
+			);
+
+			$this->db->update("tr_transaksi",$updateData,$key);	
+			
+			$data = array(
+						  'data' 	=> $dataTransaksi,
+						  'data_detail' => $dataTransaksiDetail,
+						  'total' => $total->row()->total
+							);
+			
+				$this->load->view('Dashboard/transaksi/cetak', $data);
+
 		}else{
 			session_destroy();
 			redirect('dashboard');
