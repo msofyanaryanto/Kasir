@@ -11,7 +11,30 @@ class LaporanTransaksi  extends CI_Controller{
 	
 	function index(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$listTransaksi = $this->db->get("tr_transaksi")->result();
+			$filter = array(
+				'start_date' => '',
+				'end_date' => ''
+			);
+
+			$listTransaksi = $this->db;
+
+			if(isset($_POST['start_date']) && isset($_POST['end_date'])){
+				if($_POST['start_date'] != "" && $_POST['end_date'] != ""){
+					if($_POST['start_date'] == $_POST['end_date']){
+						$listTransaksi = $listTransaksi
+						->where('DATE(tr_transaksi.createdAt) =', $_POST['start_date']);
+					}else{						
+						$listTransaksi = $listTransaksi
+						->where('tr_transaksi.createdAt >=', $_POST['start_date'])
+						->where('tr_transaksi.createdAt <=', $_POST['end_date']);
+					}					
+				}
+				$filter['start_date']	= $_POST['start_date'];
+				$filter['end_date']		=	$_POST['end_date'];
+			}
+
+			$listTransaksi = $listTransaksi->get("tr_transaksi")->result();
+
 			foreach($listTransaksi as $index => $transaksi){
 				$detailTransaksi = $this->db
 				->select('ref_barang.nama_barang')
@@ -30,7 +53,8 @@ class LaporanTransaksi  extends CI_Controller{
 			
 			$databind = array(
 				'totalPendapatan' => $totalPendapatan->total,
-				'listTransaksi' => $listTransaksi
+				'listTransaksi' => $listTransaksi,
+				'filter' => $filter
 			);
             $data = array('contents' => 'Dashboard/laporan/laporan_transaksi',
 						  'title'	 => 'Laporan Transaksi',

@@ -11,23 +11,40 @@ class LaporanStok  extends CI_Controller{
 	
 	function index(){
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$query = $this->db->query("SELECT
-			db_web.ref_kategori.kategori, 
-			db_web.ref_barang.*, 
-			db_web.ref_pembelian_barang.id_kategori
-		FROM
-			db_web.ref_pembelian_barang
-			INNER JOIN
-			db_web.ref_kategori
-			ON 
-				db_web.ref_pembelian_barang.id_kategori = db_web.ref_kategori.id_kategori
-			INNER JOIN
-			db_web.ref_barang
-			ON 
-				db_web.ref_barang.kode_barang = db_web.ref_pembelian_barang.id_barang")->result();
+			$filter = array(
+				'start_date' => '',
+				'end_date' => ''
+			);
 
+			$query = $this->db ->select('
+			ref_kategori.kategori, 
+			ref_barang.*, 
+			ref_pembelian_barang.id_kategori
+            ')
+            ->join('ref_kategori', 'ref_pembelian_barang.id_kategori = ref_kategori.id_kategori')
+            ->join('ref_barang', 'ref_barang.kode_barang = ref_pembelian_barang.id_barang');
+			
+			if(isset($_POST['start_date']) && isset($_POST['end_date'])){
+				if($_POST['start_date'] != "" && $_POST['end_date'] != ""){
+					if($_POST['start_date'] == $_POST['end_date']){
+						$query = $query
+						->where('DATE(ref_barang.createdAt) =', $_POST['start_date']);
+					}else{						
+						$query = $query
+						->where('ref_barang.createdAt >=', $_POST['start_date'])
+						->where('ref_barang.createdAt <=', $_POST['end_date']);
+					}
+				
+				}
+				$filter['start_date']	= $_POST['start_date'];
+				$filter['end_date']		=	$_POST['end_date'];
+			}
+
+			$query = $query->get("ref_pembelian_barang")->result();
+			
 			$databind = array(
-				'listStok' => $query
+				'listStok' => $query,
+				'filter' => $filter
 			);
             $data = array('contents' => 'Dashboard/laporan/laporan_stok',
 						  'title'	 => 'Laporan Stok',

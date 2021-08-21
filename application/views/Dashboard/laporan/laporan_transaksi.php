@@ -14,6 +14,22 @@
             	<div class="row">
             		<h3 class="panel-title"><?= $title ?></h3>
             	</div>
+              <form class="form-horizontal" action="<?php echo base_url() . $linkTo;?>" method="post">
+              <div class="form-group">
+                  <label class="col-sm-4 control-label">Start Date : </label>
+                  <div class="col-sm-2">
+                    <input type="date" autocomplete="off" id='start_date' name="start_date" class="form-control" value="<?= $data['filter']['start_date'] ?>">
+                  </div>
+                  <label class="col-sm-1 control-label">End Date : </label>
+                  <div class="col-sm-2">
+                  <input type="date" autocomplete="off"  id='end_date' name="end_date" class="form-control" value="<?= $data['filter']['end_date'] ?>">
+                  </div>
+                  <div class="col-sm-2">
+                     <button class="btn btn-primary" type="submit"  id="btn-filter">Filter</button>
+                     <a href="<?php echo base_url() . $linkTo;?>" class="btn btn-primary" type="button"  id="btn-clear">Clear</a>
+                  </div>
+                </div>
+              </form>
             </div>
 
 
