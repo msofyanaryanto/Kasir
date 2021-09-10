@@ -74,12 +74,12 @@
 			                      	Hapus
 			                      	</a>
 			                      </li>
-								  <li role="presentation">
+								  <!-- <li role="presentation">
 			                      	<a style="text-decoration:none; text-align:left;" class="btn btn-block btn-default" href="<?php echo base_url($linkTo.'/expired/'.$key);?>" >
 			                      	<i class="icon wb-close" aria-hidden="true"></i>
 			                      	Expired
 			                      	</a>
-			                      </li>
+			                      </li> -->
 			                    </ul>
 			                </div>
 

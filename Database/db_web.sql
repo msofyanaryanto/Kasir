@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2021 at 04:19 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Waktu pembuatan: 10 Sep 2021 pada 17.56
+-- Versi server: 10.1.31-MariaDB
+-- Versi PHP: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,12 +25,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_barang`
+-- Struktur dari tabel `ref_barang`
 --
 
 CREATE TABLE `ref_barang` (
   `id_barang` int(11) NOT NULL,
   `kode_barang` varchar(100) NOT NULL,
+  `id_kategori` int(11) NOT NULL,
   `nama_barang` varchar(100) NOT NULL,
   `createdBy` varchar(20) NOT NULL,
   `stok` int(50) NOT NULL,
@@ -41,18 +42,19 @@ CREATE TABLE `ref_barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_barang`
+-- Dumping data untuk tabel `ref_barang`
 --
 
-INSERT INTO `ref_barang` (`id_barang`, `kode_barang`, `nama_barang`, `createdBy`, `stok`, `stok_minimal`, `harga_beli`, `harga_jual`, `createdAt`) VALUES
-(2, 'BRG001', '1', 'admin', 93, 200, 1, 1, '2021-08-14 13:43:54'),
-(3, 'BRG0002', 'Burger', 'admin', 1286, 0, 10000, 15000, '2021-08-14 14:13:25'),
-(4, 'BRG0003', 'Chicken Dada', 'admin', 784, 0, 1000, 2000, '2021-08-14 14:13:29');
+INSERT INTO `ref_barang` (`id_barang`, `kode_barang`, `id_kategori`, `nama_barang`, `createdBy`, `stok`, `stok_minimal`, `harga_beli`, `harga_jual`, `createdAt`) VALUES
+(2, 'BRG001', 0, '1', 'admin', 93, 200, 1, 1, '2021-08-14 13:43:54'),
+(3, 'BRG0002', 0, 'Burger', 'admin', 1282, 0, 10000, 15000, '2021-08-14 14:22:36'),
+(4, 'BRG0003', 0, 'Chicken Dada', 'admin', 780, 0, 1000, 2000, '2021-08-14 14:22:39'),
+(5, 'BRG0001', 1, 'test', 'admin', 100, 0, 9000, 10000, '2021-09-10 15:49:07');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_group`
+-- Struktur dari tabel `ref_group`
 --
 
 CREATE TABLE `ref_group` (
@@ -63,7 +65,7 @@ CREATE TABLE `ref_group` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_group`
+-- Dumping data untuk tabel `ref_group`
 --
 
 INSERT INTO `ref_group` (`id_group`, `name_group`, `create_at`, `modified_at`) VALUES
@@ -73,7 +75,7 @@ INSERT INTO `ref_group` (`id_group`, `name_group`, `create_at`, `modified_at`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_icon`
+-- Struktur dari tabel `ref_icon`
 --
 
 CREATE TABLE `ref_icon` (
@@ -82,7 +84,7 @@ CREATE TABLE `ref_icon` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_icon`
+-- Dumping data untuk tabel `ref_icon`
 --
 
 INSERT INTO `ref_icon` (`id_icon`, `name_icon`) VALUES
@@ -456,7 +458,7 @@ INSERT INTO `ref_icon` (`id_icon`, `name_icon`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_kategori`
+-- Struktur dari tabel `ref_kategori`
 --
 
 CREATE TABLE `ref_kategori` (
@@ -466,7 +468,7 @@ CREATE TABLE `ref_kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_kategori`
+-- Dumping data untuk tabel `ref_kategori`
 --
 
 INSERT INTO `ref_kategori` (`id_kategori`, `kategori`, `created_at`) VALUES
@@ -477,7 +479,7 @@ INSERT INTO `ref_kategori` (`id_kategori`, `kategori`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_module`
+-- Struktur dari tabel `ref_module`
 --
 
 CREATE TABLE `ref_module` (
@@ -492,7 +494,7 @@ CREATE TABLE `ref_module` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_module`
+-- Dumping data untuk tabel `ref_module`
 --
 
 INSERT INTO `ref_module` (`id_module`, `id_parent`, `name_module`, `name_controller`, `icon`, `sort`, `created_at`, `modified_at`) VALUES
@@ -518,7 +520,7 @@ INSERT INTO `ref_module` (`id_module`, `id_parent`, `name_module`, `name_control
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_pembelian_barang`
+-- Struktur dari tabel `ref_pembelian_barang`
 --
 
 CREATE TABLE `ref_pembelian_barang` (
@@ -536,7 +538,7 @@ CREATE TABLE `ref_pembelian_barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_pembelian_barang`
+-- Dumping data untuk tabel `ref_pembelian_barang`
 --
 
 INSERT INTO `ref_pembelian_barang` (`id_pembelian`, `id_barang`, `id_kategori`, `id_supplier`, `createdBy`, `nama_barang`, `jumlah`, `harga_beli`, `harga_jual`, `jumlah_expired`, `createdAt`) VALUES
@@ -546,12 +548,14 @@ INSERT INTO `ref_pembelian_barang` (`id_pembelian`, `id_barang`, `id_kategori`, 
 (6, 'BRG0002', 1, '1', 'admin', 'Burger', 500, 10000, 15000, 0, '2021-07-28 14:46:37'),
 (7, 'BRG0003', 0, '1', 'admin', 'Chicken Dada', 900, 1000, 2000, 0, '2021-07-28 13:06:02'),
 (8, 'BRG0005', 1, '1', 'admin', 'TEst', 100, 100, 100, 0, '2021-07-28 14:50:18'),
-(9, 'BRG0002', 1, '1', 'admin', 'Burger', 800, 10000, 15000, 0, '2021-07-28 14:51:22');
+(9, 'BRG0002', 1, '1', 'admin', 'Burger', 800, 10000, 15000, 0, '2021-07-28 14:51:22'),
+(10, 'BRG0021', 1, '1', 'admin', 'TEST Barang', 1000, 4000, 5000, 0, '2021-09-10 15:48:12'),
+(11, 'BRG0001', 1, '1', 'admin', 'test', 100, 9000, 10000, 0, '2021-09-10 15:49:07');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_supplier`
+-- Struktur dari tabel `ref_supplier`
 --
 
 CREATE TABLE `ref_supplier` (
@@ -564,7 +568,7 @@ CREATE TABLE `ref_supplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_supplier`
+-- Dumping data untuk tabel `ref_supplier`
 --
 
 INSERT INTO `ref_supplier` (`id_supplier`, `nama_supplier`, `nomor_handphone`, `email`, `alamat`, `createdAt`) VALUES
@@ -573,7 +577,7 @@ INSERT INTO `ref_supplier` (`id_supplier`, `nama_supplier`, `nomor_handphone`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_user`
+-- Struktur dari tabel `ref_user`
 --
 
 CREATE TABLE `ref_user` (
@@ -587,7 +591,7 @@ CREATE TABLE `ref_user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_user`
+-- Dumping data untuk tabel `ref_user`
 --
 
 INSERT INTO `ref_user` (`id_user`, `id_group`, `name_user`, `username`, `password`, `created_at`, `modified_at`) VALUES
@@ -597,7 +601,7 @@ INSERT INTO `ref_user` (`id_user`, `id_group`, `name_user`, `username`, `passwor
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_user_access`
+-- Struktur dari tabel `ref_user_access`
 --
 
 CREATE TABLE `ref_user_access` (
@@ -617,7 +621,7 @@ CREATE TABLE `ref_user_access` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ref_user_access`
+-- Dumping data untuk tabel `ref_user_access`
 --
 
 INSERT INTO `ref_user_access` (`id_user_access`, `id_group`, `id_module`, `akses`, `tambah`, `lihat`, `edit`, `hapus`, `ex_excel`, `ex_pdf`, `id_parent`, `create_at`, `modified_at`) VALUES
@@ -661,7 +665,7 @@ INSERT INTO `ref_user_access` (`id_user_access`, `id_group`, `id_module`, `akses
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tr_detail_transaksi`
+-- Struktur dari tabel `tr_detail_transaksi`
 --
 
 CREATE TABLE `tr_detail_transaksi` (
@@ -676,7 +680,7 @@ CREATE TABLE `tr_detail_transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tr_detail_transaksi`
+-- Dumping data untuk tabel `tr_detail_transaksi`
 --
 
 INSERT INTO `tr_detail_transaksi` (`detail_transaksi_id`, `noStruk`, `barangId`, `jumlah`, `status`, `harga`, `total_harga`, `createdAt`) VALUES
@@ -686,10 +690,12 @@ INSERT INTO `tr_detail_transaksi` (`detail_transaksi_id`, `noStruk`, `barangId`,
 (4, 'STR003', 'BRG0002', 2, '', 15000, 30000, '2021-08-14 14:07:59'),
 (5, 'STR003', 'BRG0003', 10, '', 2000, 20000, '2021-08-14 14:08:12'),
 (6, 'STR004', 'BRG0002', 3, '', 15000, 45000, '2021-08-14 14:13:25'),
-(7, 'STR004', 'BRG0003', 4, '', 2000, 8000, '2021-08-14 14:13:29');
+(7, 'STR004', 'BRG0003', 4, '', 2000, 8000, '2021-08-14 14:13:29'),
+(8, 'STR005', 'BRG0002', 2, '', 15000, 30000, '2021-08-14 14:22:36'),
+(9, 'STR005', 'BRG0003', 2, '', 2000, 4000, '2021-08-14 14:22:39');
 
 --
--- Triggers `tr_detail_transaksi`
+-- Trigger `tr_detail_transaksi`
 --
 DELIMITER $$
 CREATE TRIGGER `DeleteBarang` AFTER DELETE ON `tr_detail_transaksi` FOR EACH ROW BEGIN
@@ -725,7 +731,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tr_transaksi`
+-- Struktur dari tabel `tr_transaksi`
 --
 
 CREATE TABLE `tr_transaksi` (
@@ -738,143 +744,144 @@ CREATE TABLE `tr_transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tr_transaksi`
+-- Dumping data untuk tabel `tr_transaksi`
 --
 
 INSERT INTO `tr_transaksi` (`no_struk`, `id_transaksi`, `createdBy`, `total`, `status`, `createdAt`) VALUES
 ('STR001', 2, 'admin', 15001, 'Sudah Bayar', '2021-08-14 13:41:42'),
 ('STR002', 3, 'admin', 1, 'Sudah Bayar', '2021-08-14 13:43:57'),
 ('STR003', 4, 'admin', 50000, 'Sudah Bayar', '2021-08-14 14:08:17'),
-('STR004', 5, 'admin', 53000, 'Sudah Bayar', '2021-08-14 14:13:32');
+('STR004', 5, 'admin', 53000, 'Sudah Bayar', '2021-08-14 14:13:32'),
+('STR005', 6, 'admin', 34000, 'Sudah Bayar', '2021-08-14 14:23:51');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `ref_barang`
+-- Indeks untuk tabel `ref_barang`
 --
 ALTER TABLE `ref_barang`
   ADD PRIMARY KEY (`id_barang`);
 
 --
--- Indexes for table `ref_group`
+-- Indeks untuk tabel `ref_group`
 --
 ALTER TABLE `ref_group`
   ADD PRIMARY KEY (`id_group`);
 
 --
--- Indexes for table `ref_kategori`
+-- Indeks untuk tabel `ref_kategori`
 --
 ALTER TABLE `ref_kategori`
   ADD PRIMARY KEY (`id_kategori`);
 
 --
--- Indexes for table `ref_module`
+-- Indeks untuk tabel `ref_module`
 --
 ALTER TABLE `ref_module`
   ADD PRIMARY KEY (`id_module`),
   ADD UNIQUE KEY `id_module` (`id_module`);
 
 --
--- Indexes for table `ref_pembelian_barang`
+-- Indeks untuk tabel `ref_pembelian_barang`
 --
 ALTER TABLE `ref_pembelian_barang`
   ADD PRIMARY KEY (`id_pembelian`);
 
 --
--- Indexes for table `ref_supplier`
+-- Indeks untuk tabel `ref_supplier`
 --
 ALTER TABLE `ref_supplier`
   ADD PRIMARY KEY (`id_supplier`);
 
 --
--- Indexes for table `ref_user`
+-- Indeks untuk tabel `ref_user`
 --
 ALTER TABLE `ref_user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- Indexes for table `ref_user_access`
+-- Indeks untuk tabel `ref_user_access`
 --
 ALTER TABLE `ref_user_access`
   ADD PRIMARY KEY (`id_user_access`);
 
 --
--- Indexes for table `tr_detail_transaksi`
+-- Indeks untuk tabel `tr_detail_transaksi`
 --
 ALTER TABLE `tr_detail_transaksi`
   ADD PRIMARY KEY (`detail_transaksi_id`);
 
 --
--- Indexes for table `tr_transaksi`
+-- Indeks untuk tabel `tr_transaksi`
 --
 ALTER TABLE `tr_transaksi`
   ADD PRIMARY KEY (`id_transaksi`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `ref_barang`
+-- AUTO_INCREMENT untuk tabel `ref_barang`
 --
 ALTER TABLE `ref_barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `ref_group`
+-- AUTO_INCREMENT untuk tabel `ref_group`
 --
 ALTER TABLE `ref_group`
   MODIFY `id_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `ref_kategori`
+-- AUTO_INCREMENT untuk tabel `ref_kategori`
 --
 ALTER TABLE `ref_kategori`
   MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `ref_module`
+-- AUTO_INCREMENT untuk tabel `ref_module`
 --
 ALTER TABLE `ref_module`
   MODIFY `id_module` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
--- AUTO_INCREMENT for table `ref_pembelian_barang`
+-- AUTO_INCREMENT untuk tabel `ref_pembelian_barang`
 --
 ALTER TABLE `ref_pembelian_barang`
-  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_pembelian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `ref_supplier`
+-- AUTO_INCREMENT untuk tabel `ref_supplier`
 --
 ALTER TABLE `ref_supplier`
   MODIFY `id_supplier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `ref_user`
+-- AUTO_INCREMENT untuk tabel `ref_user`
 --
 ALTER TABLE `ref_user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `ref_user_access`
+-- AUTO_INCREMENT untuk tabel `ref_user_access`
 --
 ALTER TABLE `ref_user_access`
   MODIFY `id_user_access` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=409;
 
 --
--- AUTO_INCREMENT for table `tr_detail_transaksi`
+-- AUTO_INCREMENT untuk tabel `tr_detail_transaksi`
 --
 ALTER TABLE `tr_detail_transaksi`
-  MODIFY `detail_transaksi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `detail_transaksi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `tr_transaksi`
+-- AUTO_INCREMENT untuk tabel `tr_transaksi`
 --
 ALTER TABLE `tr_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

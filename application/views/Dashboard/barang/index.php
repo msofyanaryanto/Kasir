@@ -46,7 +46,7 @@
                     ?>
                     <tr>
                         <td><?= $no ?></td>
-                        <td><?= $value->id_barang ?></td>
+                        <td><?= $value->kode_barang ?></td>
 						<td><?= $value->kategori ?></td>
 						<td><?= $value->nama_barang ?></td>
 						<td><?= $value->stok ?></td>
