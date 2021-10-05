@@ -12,10 +12,51 @@ class Dashboard extends CI_Controller {
 
 	
 	public function index() {
-		
 		if($this->session->userdata('name_user') and $this->session->userdata('username')){
-			$data = array('contents' => 'Layouts/home'
-							);
+			$arrTransaksi = '';
+			$startDate = date('Y-m',strtotime('-1 month'));
+			$endDate = date('Y-m');
+			if($this->input->server('REQUEST_METHOD') === 'POST'){
+				if($this->input->post('start_date')!=""){
+					$startDate = $this->input->post('start_date');
+				}
+	
+				if($this->input->post('end_date')!=""){
+					$endDate = $this->input->post('end_date');
+				}
+			}
+
+			$getDataTransaksi = $this->db->select('SUM(total) as total,CONCAT(MONTHNAME(createdAt)," ",SUBSTR(createdAt,1,4)) as period')
+											->where('SUBSTR(createdAt,1,7) >=',$startDate)
+											->where('SUBSTR(createdAt,1,7) <=',$endDate)
+											->group_by('SUBSTR(createdAt,1,7)')
+											->get('tr_transaksi')->result();
+			
+			$getDataProduk = $this->db->select('SUM(tdt.jumlah) as total, rb.nama_barang')
+											->join('ref_barang rb','rb.kode_barang = tdt.barangId')
+											->where('SUBSTR(tdt.createdAt,1,7) >=',$startDate)
+											->where('SUBSTR(tdt.createdAt,1,7) <=',$endDate)
+											->group_by('tdt.barangId')
+											->get('tr_detail_transaksi tdt')->result();
+
+			$getDataPembelian = $this->db->select('SUM(rpb.jumlah) as total, rb.nama_barang')
+							->join('ref_barang rb','rb.kode_barang = rpb.id_barang')
+							->where('SUBSTR(rpb.createdAt,1,7) >=',$startDate)
+							->where('SUBSTR(rpb.createdAt,1,7) <=',$endDate)
+							->group_by('rpb.id_barang')
+							->get('ref_pembelian_barang rpb')->result();
+
+
+
+			$data = array(
+					'contents' => 'Dashboard/index',
+					'startDate'=>$startDate,
+					'endDate'=>$endDate,
+					'transaksi'=>json_encode($getDataTransaksi),
+					'produk'=>json_encode($getDataProduk),
+					'pembelian'=>json_encode($getDataPembelian)
+			);
+
 			$this->load->view('Layouts/warper',$data);
 		}else{
 			$this->load->view('Layouts/Login');	

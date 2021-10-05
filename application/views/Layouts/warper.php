@@ -37,7 +37,7 @@
 
   <!-- Plugins For This Page -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/fullcalendar/fullcalendar.min3f0d.css?v2.2.0">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/bootstrap-datepicker/bootstrap-datepicker.min3f0d.css?v2.2.0">
+  
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/bootstrap-touchspin/bootstrap-touchspin.min3f0d.css?v2.2.0">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/jquery-selective/jquery-selective.min3f0d.css?v2.2.0">
 
@@ -94,7 +94,7 @@
   <link rel="stylesheet" href="<?php echo base_url() ; ?>assets/assets/examples/css/tables/datatable.min3f0d.css?v2.2.0">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/select2/select2.min3f0d.css?v2.2.0">
 <?php } ?>
-
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/global/vendor/bootstrap-datepicker/bootstrap-datepicker.min3f0d.css?v2.2.0">
   <!-- Scripts -->
   <script src="<?php echo base_url(); ?>assets/global/vendor/modernizr/modernizr.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/vendor/breakpoints/breakpoints.min.js"></script>
@@ -165,7 +165,7 @@
   <script src="<?php echo base_url(); ?>assets/global/js/components/switchery.min.js"></script>
 
   <script src="<?php echo base_url(); ?>assets/global/js/components/bootstrap-touchspin.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/global/js/components/bootstrap-datepicker.min.js"></script>
+  
   <script src="<?php echo base_url(); ?>assets/global/js/components/material.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/js/plugins/action-btn.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/js/components/bootbox.min.js"></script>
@@ -175,7 +175,7 @@
   <script src="<?php echo base_url(); ?>assets/global/vendor/moment/moment.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/vendor/fullcalendar/fullcalendar.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/vendor/jquery-selective/jquery-selective.min.js"></script>
-  <script src="<?php echo base_url(); ?>assets/global/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  
   <script src="<?php echo base_url(); ?>assets/global/vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/global/vendor/bootbox/bootbox.js"></script>
 
@@ -255,6 +255,46 @@
 <script src="<?php echo base_url(); ?>assets/global/vendor/select2/select2.full.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/global/js/components/select2.min.js"></script>
 <?php } ?>  
+<script src="<?php echo base_url(); ?>assets/global/js/components/bootstrap-datepicker.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/global/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<?php if($this->uri->segment(1) == "dashboard"){ ?>
+  <script>
+    Morris.Bar({
+      element: 'chart-transaksi',
+      data: <?php echo $transaksi?>,
+      xkey: 'period',
+      ykeys: ['total'],
+      labels: ['Total']
+    });
+
+    Morris.Bar({
+      element: 'chart-produk',
+      data: <?php echo $produk?>,
+      xkey: 'nama_barang',
+      ykeys: ['total'],
+      labels: ['Total']
+    });
+
+    Morris.Bar({
+      element: 'chart-pembelian',
+      data: <?php echo $pembelian?>,
+      xkey: 'nama_barang',
+      ykeys: ['total'],
+      labels: ['Total']
+    });
+
+    $("#start_date").datepicker( {
+        format: "yyyy-mm",
+        startView: "years", 
+        minViewMode: "months"
+    });
+    $("#end_date").datepicker( {
+        format: "yyyy-mm",
+        startView: "years", 
+        minViewMode: "months"
+    });
+</script>
+<?php }?>
 
 </body>
 
